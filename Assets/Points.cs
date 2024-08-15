@@ -9,7 +9,6 @@ public class Points : MonoBehaviour
     void Awake()
     {
         countPoints = transform.childCount;
-        Debug.Log("i: "+countPoints);
     }
     
 
