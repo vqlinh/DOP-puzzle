@@ -144,7 +144,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -219,7 +219,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e767ea25050682a44a9309516f5cdd39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
   i: 0
-  effect1: {fileID: 1102996024290708521, guid: 201217b67cdd3db48bc64157c716b70f, type: 3}
-  effect2: {fileID: 2622624989035412983, guid: 3082f491583671a479da4b4a6a98a2ef, type: 3}

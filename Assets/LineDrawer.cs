@@ -6,14 +6,11 @@ public class LineDrawer : MonoBehaviour
     private LineRenderer lineRenderer;
     private EdgeCollider2D edgeCollider;
     private List<Vector3> points;
-    public Animator animator;
     public int i;
-    public GameObject effect1;
-    public GameObject effect2;
+
     void Start()
     {
-        animator = GameObject.Find("Full").GetComponent<Animator>();
-        animator.enabled = false;
+
         lineRenderer = GetComponent<LineRenderer>();
         edgeCollider = GetComponent<EdgeCollider2D>();
         points = new List<Vector3>();
@@ -49,20 +46,14 @@ public class LineDrawer : MonoBehaviour
         {
             if (i == GameManager.i.count)
             {
-                GameManager.i.hidenpart.SetActive(true);
-                animator.enabled = true;
-                Invoke(nameof(Effect),0.5f);
+                GameManager.i.win = true;
             }
             points.Clear();
             lineRenderer.positionCount = 0;
             edgeCollider.Reset();
         }
     }
-    void Effect()
-    {
-        GameObject eff = Instantiate(effect1, Vector2.zero, Quaternion.identity);
-        GameObject eff2 = Instantiate(effect2, Vector2.zero, Quaternion.identity);
-    }
+
     private Vector2[] ConvertToVector2(List<Vector3> vector3List)
     {
         Vector2[] vector2Array = new Vector2[vector3List.Count];
@@ -80,6 +71,10 @@ public class LineDrawer : MonoBehaviour
         {
             i++;
             Debug.Log("i");
+        }
+        if (collision.gameObject.CompareTag("obstacle"))
+        {
+            i--; Debug.Log("i--");
         }
     }
 }
