@@ -19,6 +19,10 @@ public class LineDrawer : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.i.timer==false)
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             points.Clear();

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,11 +12,18 @@ public class GameManager : MonoBehaviour
     public GameObject line;
     public Points points;
     public int count;
-    public bool win=false;
+    public bool win = false;
     public Animator animator;
     public GameObject effect1;
     public GameObject effect2;
     public GameObject tick;
+
+    public float time;
+    public TextMeshProUGUI cooldown;
+    public bool timer = true;
+    public UiPanelDotween ui;
+    public Sprite lose;
+    public Sprite replay;
     private void Awake()
     {
         i = this;
@@ -48,13 +57,38 @@ public class GameManager : MonoBehaviour
                     spriteRenderer.enabled = false;
             }
             Invoke(nameof(Effect), 0.5f);
-            win=false;
+            Invoke(nameof(UiWin), 1f);
+            win = false;
         }
+
+
+        if (!win&& time > 0)
+        {
+            time -= Time.deltaTime;
+            cooldown.text = Mathf.CeilToInt(time).ToString();
+            if (time<=0)
+            {
+                ui.PanelFadeIn();
+
+                GameObject.Find("Board").GetComponent<Image>().sprite=lose;
+                GameObject.Find("Next").GetComponent<Image>().sprite = replay;
+                Debug.Log("Lose");
+
+                timer = false;
+            }
+
+        }
+
+
     }
     void Effect()
     {
         GameObject eff = Instantiate(effect1, Vector2.zero, Quaternion.identity);
         GameObject eff2 = Instantiate(effect2, Vector2.zero, Quaternion.identity);
+    }
+    void UiWin()
+    {
+        ui.PanelFadeIn();
     }
 
 }
