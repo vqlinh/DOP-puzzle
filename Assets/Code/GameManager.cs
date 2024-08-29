@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour
     public UiPanelDotween ui;
     public Sprite lose;
     public Sprite replay;
+    public Button button;
+    public SceneFader sceneFader;
     private void Awake()
     {
         i = this;
@@ -31,6 +34,8 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(line, Vector2.zero, Quaternion.identity);
         }
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
     }
     void Start()
     {
@@ -39,6 +44,7 @@ public class GameManager : MonoBehaviour
         animator = GameObject.Find("Full").GetComponent<Animator>();
         animator.enabled = false;
         tick.SetActive(false);
+        button.onClick.AddListener(Replay);
 
     }
     private void Update()
@@ -59,6 +65,8 @@ public class GameManager : MonoBehaviour
             Invoke(nameof(Effect), 0.5f);
             Invoke(nameof(UiWin), 1f);
             win = false;
+            button.onClick.RemoveAllListeners(); // Xóa tất cả sự kiện cũ
+            button.onClick.AddListener(NextLevel);
         }
 
 
@@ -73,7 +81,8 @@ public class GameManager : MonoBehaviour
                 GameObject.Find("Board").GetComponent<Image>().sprite=lose;
                 GameObject.Find("Next").GetComponent<Image>().sprite = replay;
                 Debug.Log("Lose");
-
+                button.onClick.RemoveAllListeners(); // Xóa tất cả sự kiện cũ
+                button.onClick.AddListener(Replay);
                 timer = false;
             }
 
@@ -89,6 +98,20 @@ public class GameManager : MonoBehaviour
     void UiWin()
     {
         ui.PanelFadeIn();
+    }
+    public void NextLevel()
+    {
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextSceneIndex);
+    }
+    public void Replay()
+    {
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(nextSceneIndex);
+    }
+    public void BackHome()
+    {
+        sceneFader.FadeTo("HomeScene");
     }
 
 }
