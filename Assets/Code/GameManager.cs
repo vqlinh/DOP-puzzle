@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     public Sprite replay;
     public Button button;
     public SceneFader sceneFader;
+    public Level level;
     private void Awake()
     {
         i = this;
@@ -36,6 +38,9 @@ public class GameManager : MonoBehaviour
         }
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
+        LoadLevel(1);
+        points =GameObject.FindObjectOfType<Points>();
+        hidenpart = GameObject.Find("HidenPart");
     }
     void Start()
     {
@@ -46,6 +51,10 @@ public class GameManager : MonoBehaviour
         tick.SetActive(false);
         button.onClick.AddListener(Replay);
 
+    }
+    void LoadLevel(int index)
+    {
+        GameObject lv = Instantiate(level.listLevel[index], new Vector2(0,0), Quaternion.identity); ;
     }
     private void Update()
     {
@@ -65,7 +74,7 @@ public class GameManager : MonoBehaviour
             Invoke(nameof(Effect), 0.5f);
             Invoke(nameof(UiWin), 1f);
             win = false;
-            button.onClick.RemoveAllListeners(); // Xóa tất cả sự kiện cũ
+            button.onClick.RemoveAllListeners(); 
             button.onClick.AddListener(NextLevel);
         }
 
@@ -81,15 +90,13 @@ public class GameManager : MonoBehaviour
                 GameObject.Find("Board").GetComponent<Image>().sprite=lose;
                 GameObject.Find("Next").GetComponent<Image>().sprite = replay;
                 Debug.Log("Lose");
-                button.onClick.RemoveAllListeners(); // Xóa tất cả sự kiện cũ
+                button.onClick.RemoveAllListeners(); 
                 button.onClick.AddListener(Replay);
                 timer = false;
             }
-
         }
-
-
     }
+
     void Effect()
     {
         GameObject eff = Instantiate(effect1, Vector2.zero, Quaternion.identity);
@@ -112,6 +119,10 @@ public class GameManager : MonoBehaviour
     public void BackHome()
     {
         sceneFader.FadeTo("HomeScene");
+    }
+    public void Hint()
+    {
+        points.Hint();
     }
 
 }
